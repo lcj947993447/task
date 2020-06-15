@@ -29,6 +29,13 @@ const reporter = require('postcss-reporter')
 const stylelint = require('stylelint')
 const postcss_scss = require('postcss-scss');
 
+// 接受命令行传递参数
+const knownOptions = {
+  string: 'env',
+  default: { env: process.env.NODE_ENV || 'production' }
+};
+const options = minimist(process.argv.slice(2), knownOptions);
+
 const data = {
   menus: [
     {
@@ -218,11 +225,6 @@ const build = series(
 const start = series(compile, serve)
 
 // deploy 推送到生产服务器
-let knownOptions = {
-  string: 'env',
-  default: { env: process.env.NODE_ENV || 'production' }
-};
-let options = minimist(process.argv.slice(2), knownOptions);
 
 
 

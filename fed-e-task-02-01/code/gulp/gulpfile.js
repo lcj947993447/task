@@ -19,6 +19,10 @@ const del = require('del')
 const browserSync = require('browser-sync')
 const bs = browserSync.create()
 
+const reporter = require('postcss-reporter')
+const stylelint = require('stylelint')
+const postcss_scss = require('postcss-scss');
+
 const data = {
   menus: [
     {
@@ -119,11 +123,28 @@ const clean = () => {
 }
 
 // lint 自检
-const lint = () => {
+const jslint = () => {
   return src('src/assets/scripts/*.js', { base: 'src' })
     .pipe(plugins.jshint())
-    .pipe(plugins.jshint.reporter('default'));
+    .pipe(plugins.jshint.reporter('default'))
 }
+const csslint = () => {
+  // Stylelint config rules 
+  const stylelintConfig = {
+    "rules": {
+      "font-family-name-quotes": "always-unless-keyword"
+    }
+  }
+  const processors = [
+    stylelint(stylelintConfig),
+    reporter({ clearMessages: true, throwError: true })
+  ]
+
+  return src('src/assets/styles/*.scss', { base: 'src' })
+    .pipe(plugins.postcss(processors, { syntax: postcss_scss }))
+}
+
+const lint = parallel(jslint, csslint)
 
 // 本地服务器
 const serve = () => {
@@ -141,8 +162,8 @@ const serve = () => {
   // 启动服务器
   bs.init({
     notify: false, // browsersync的小通知 是否展示
-    port: 443,// 接口
-    // proxy:' localhost:8888' 设置代理的方式
+    port: 2080,// 接口
+    // proxy:' localhost:2080' 设置代理的方式
     server: { // 服务器启动目录
       baseDir: ['temp', 'src', 'public'],
       routes: { // 配置/node_modules的文件去node_modules下去查找
@@ -170,7 +191,7 @@ const useref = () => {
 }
 
 // 频繁的修改 js css html 组合成一个并行道
-const start = parallel(script, style, htmlTemp)
+const compile = parallel(script, style, htmlTemp)
 
 // build 打包 单行道
 // 删除老文件
@@ -180,20 +201,29 @@ const start = parallel(script, style, htmlTemp)
 const build = series(
   clean,
   parallel(
-    series(start, useref),
+    series(compile, useref),
     image,
     font,
     extra
   )
 )
 
-// deploy 编译并启动服务器
-const deploy = series(start, serve)
+// start 编译并启动本地服务器
+const start = series(compile, serve)
 
-// deploy
+// deploy 推送到生产服务器
+const deploy = () => {
+  returngulp.src('dist/**/*')
+    .pipe(ghPages({
+
+    }));
+}
+
+
 module.exports = {
   clean,
   lint,
+  compile,
   serve,
   build,
   start,

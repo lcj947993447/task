@@ -170,7 +170,7 @@ const useref = () => {
 }
 
 // 频繁的修改 js css html 组合成一个并行道
-const compile = parallel(script, style, htmlTemp)
+const start = parallel(script, style, htmlTemp)
 
 // build 打包 单行道
 // 删除老文件
@@ -180,18 +180,15 @@ const compile = parallel(script, style, htmlTemp)
 const build = series(
   clean,
   parallel(
-    series(compile, useref),
+    series(start, useref),
     image,
     font,
     extra
   )
 )
 
-// start 编译并启动服务器
-const start = series(compile, serve)
-
-// deploy 部署
-
+// deploy 编译并启动服务器
+const deploy = series(start, serve)
 
 // deploy
 module.exports = {

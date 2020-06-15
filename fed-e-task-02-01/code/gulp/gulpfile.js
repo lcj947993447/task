@@ -77,7 +77,7 @@ const script = () => {
 // css
 const style = () => {
   return src('src/assets/styles/*.scss', { base: 'src' })
-    .pipe(plugins.scss({ outputStyle: 'expanded' }))
+    .pipe(plugins.sass({ outputStyle: 'expanded' }))
     .pipe(dest('temp'))
     .pipe(bs.reload({ stream: true }))
 }

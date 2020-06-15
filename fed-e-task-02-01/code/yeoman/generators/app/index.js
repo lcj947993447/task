@@ -23,6 +23,7 @@ module.exports = class extends Generator {
             'README.md',
             'package.json',
             'babel.config.js',
+            '.gitignore',
             'src/main.js',
             'src/App.vue',
             'src/assets/logo.png',

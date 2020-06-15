@@ -14,11 +14,17 @@ const { src, dest, parallel, series, watch } = require('gulp')
 const loadPlugins = require('gulp-load-plugins')
 const plugins = loadPlugins()
 
+// 删除
 const del = require('del')
 
+// 静态服务器
 const browserSync = require('browser-sync')
 const bs = browserSync.create()
 
+// 命令行传参
+const minimist = require('minimist');
+
+// css 校验
 const reporter = require('postcss-reporter')
 const stylelint = require('stylelint')
 const postcss_scss = require('postcss-scss');
@@ -132,7 +138,7 @@ const csslint = () => {
   // Stylelint config rules 
   const stylelintConfig = {
     "rules": {
-      "font-family-name-quotes": "always-unless-keyword"
+      "font-family-name-quotes": "always-unless-keyword" // 关键词字体 必须要用引号包起来
     }
   }
   const processors = [
@@ -212,12 +218,22 @@ const build = series(
 const start = series(compile, serve)
 
 // deploy 推送到生产服务器
-const deploy = () => {
-  returngulp.src('dist/**/*')
-    .pipe(ghPages({
+let knownOptions = {
+  string: 'env',
+  default: { env: process.env.NODE_ENV || 'production' }
+};
+let options = minimist(process.argv.slice(2), knownOptions);
 
-    }));
+
+
+const gitPush = () => {
+  return src('dist/**/*')
+    .pipe(plugins.if(options.env === "production", plugins.ghPages({
+      'remoteUrl': 'https://pages.github.com'
+    })))
 }
+
+const deploy = series(build, gitPush)
 
 
 module.exports = {
@@ -227,7 +243,8 @@ module.exports = {
   serve,
   build,
   start,
-  deploy
+  deploy,
+  gitPush
 }
 
 

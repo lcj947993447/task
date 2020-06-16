@@ -10,9 +10,9 @@ module.exports = class extends Generator {
                 default: this.appname
             }
         ])
-        .then(answers => {
-            this.answers = answers
-        })
+            .then(answers => {
+                this.answers = answers
+            })
     }
 
     writing () {
@@ -27,7 +27,7 @@ module.exports = class extends Generator {
             'src/main.js',
             'src/App.vue',
             'src/assets/logo.png',
-            'src/components/HelloWorld.vue',
+            'src/components/Hello.vue',
             'public/favicon.ico',
             'public/index.html'
         ]

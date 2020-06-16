@@ -245,8 +245,7 @@ module.exports = {
   serve,
   build,
   start,
-  deploy,
-  gitPush
+  deploy
 }
 
 

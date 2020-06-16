@@ -6,6 +6,8 @@
   "devel": true, // 可以使用console, alert；不配置为true是会报console未定义
   "globals": {
     // 配置全局变量，直接使用不会报错
-    "module": true //不配置module为true时，在 module.exports = {} 时报module未定义
+    "module": true, //不配置module为true时，在 module.exports = {} 时报module未定义
+    "$": false,
+    "jQuery": false
   }
 }

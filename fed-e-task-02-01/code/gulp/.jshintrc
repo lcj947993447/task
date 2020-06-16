@@ -2,8 +2,8 @@
   "esversion": 6, //可以有es6语法
   "asi": true,
   // "undef": true, // 使用之前必须定义
-  // "unused": true, // 定义了必须使用
-  "devel": true, // 可以使用console, alert；不配置为true是会报console未定义
+  "unused": true, // 定义了必须使用
+  "devel": false, // 可以使用console, alert；不配置为true是会报console未定义
   "globals": {
     // 配置全局变量，直接使用不会报错
     "module": true //不配置module为true时，在 module.exports = {} 时报module未定义

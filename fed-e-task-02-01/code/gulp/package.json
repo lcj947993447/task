@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/zce/pages-boilerplate.git"
+    "url": "https://github.com/zce/pages-boilerplate.git"
   },
   "license": "MIT",
   "author": {

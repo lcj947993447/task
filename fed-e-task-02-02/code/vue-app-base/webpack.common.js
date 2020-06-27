@@ -22,12 +22,18 @@ module.exports = (env, argv) => {
 					exclude: /node_modules/,
 				},
 				{
-					test: /\.css$/,
-					use: ['vue-style-loader', 'css-loader'],
-				},
-				{
-					test: /\.less$/,
-					use: ['vue-style-loader', 'css-loader', 'less-loader'],
+					test: /\.(css|less)$/,
+					use: [
+						'vue-style-loader',
+						'css-loader',
+						{
+							loader: 'less-loader',
+							exclude: '/node_modules',
+							options: {
+								importLoaders: 1
+							}
+						}
+					],
 				},
 				{
 					test: /\.(png|jpe?g|gif)$/,

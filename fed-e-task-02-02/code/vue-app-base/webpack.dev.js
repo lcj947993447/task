@@ -1,10 +1,22 @@
 const path = require('path')
 const webpack = require("webpack");
 const merge = require("webpack-merge");
-const common = require("./webpack.common.js");
+const common = require("./webpack.common");
+
 
 module.exports = merge(common, {
   mode: "development",
+  module: {
+    rules: [
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: {
+          hotReload: true, // disables Hot Reload
+        },
+      }
+    ],
+  },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     hot: true,

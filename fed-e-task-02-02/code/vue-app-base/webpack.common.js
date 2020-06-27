@@ -63,15 +63,15 @@ module.exports = {
 		}),
 		new VueLoaderPlugin(),
 	],
-	resolve: { // 用来配置.vue文件内引用组件的处理
+	resolve: { // 用来配置.vue文件内引用组件的处理 
 		extensions: [
 			'.vue', '.js'
 		],
 		modules: ["node_modules"],
 		alias: {
 			vue: 'vue/dist/vue.min.js',
-			'@': path.join(__dirname, '.', 'src'),
-			'@components': path.join(__dirname, '.', 'src/components')
+			'@': path.join(__dirname, '.', 'src'), // 将@指向src目录下
+			'@components': path.join(__dirname, '.', 'src/components')// 将组件引用指向src/components下
 		}
 	},
 }

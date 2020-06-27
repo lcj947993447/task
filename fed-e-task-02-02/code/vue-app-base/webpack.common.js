@@ -9,6 +9,12 @@ module.exports = {
 		filename: '[name].js',
 		path: path.resolve(__dirname, 'dist'),
 	},
+	optimization: { 
+		// 优化功能管理集合 便于管理
+		// 只有在生产环境时会自动工作  并启动 minimizer 中的配置
+		usedExports: true, // 只导出被引用的代码
+		// minimizer: true, // 开启压缩
+	},
 	module: {
 		rules: [
 			{
@@ -29,7 +35,7 @@ module.exports = {
 			{
 				test: /\.less$/,
 				use: [
-					'style-loader',
+					'vue-style-loader', // MiniCssExtractPlugin.loader 使用
 					'css-loader',
 					'less-loader',
 				],
@@ -37,7 +43,7 @@ module.exports = {
 			{
 				test: /\.(png|jpe?g|gif)$/,
 				use: {
-					loader: 'url-loader',
+					loader: 'url-loader', // url-loader 根据 limit 等判断 不符合条件 使用 file-loader
 					options: {
 						esModule: false,
 						limit: 1024, // 判断图片的大小   如果小于1024就会转换成base64
@@ -61,7 +67,7 @@ module.exports = {
 			favicon: path.resolve(__dirname, 'public/favicon.ico'),
 			template: path.resolve(__dirname, 'public/index.html'), //以当前目录下的index.html文件为模板生成dist/index.html文件
 		}),
-		new VueLoaderPlugin(),
+		new VueLoaderPlugin(),// vue-loader 必备配置
 	],
 	resolve: { // 用来配置.vue文件内引用组件的处理 
 		extensions: [

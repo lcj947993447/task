@@ -5,8 +5,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = (env, argv) => {
 	const config = {
-		target: 'web',
-		entry: path.resolve(__dirname, './src/js/main.js'),//指定打包文件
+		entry: path.resolve(__dirname, './src/index.js'),//指定打包文件
 		output: {
 			filename: '[name].js',
 			path: path.resolve(__dirname, 'dist'),
@@ -22,17 +21,18 @@ module.exports = (env, argv) => {
 					exclude: /node_modules/,
 				},
 				{
-					test: /\.(css|less)$/,
+					test: /\.css$/,
 					use: [
 						'vue-style-loader',
 						'css-loader',
-						{
-							loader: 'less-loader',
-							exclude: '/node_modules',
-							options: {
-								importLoaders: 1
-							}
-						}
+					],
+				},
+				{
+					test: /\.less$/,
+					use: [
+						'style-loader',
+						'css-loader',
+						'less-loader',
 					],
 				},
 				{

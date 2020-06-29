@@ -19,11 +19,19 @@ module.exports = {
 		rules: [
 			{
 				test: /\.js$/,
-				loader: 'babel-loader',
-				options: {
-					presets: ['@babel/preset-env'],
-				},
+				use: [{
+					loader: 'babel-loader',
+					options: {
+						presets: ['@babel/preset-env'],
+					},
+				}],
 				exclude: /node_modules/,
+			},
+			{
+				test: /\.(js|vue)$/,
+				use: 'eslint-loader',
+				exclude: /node_modules/,
+				enforce: 'pre', // 预处理
 			},
 			{
 				test: /\.css$/,
@@ -54,7 +62,7 @@ module.exports = {
 		],
 	},
 	plugins: [
-		new webpack.DefinePlugin({
+		new webpack.DefinePlugin({// 默认值配置
 			// 值要求的是一个代码片段
 			BASE_URL: JSON.stringify(path.resolve(__dirname, 'public')),
 		}),

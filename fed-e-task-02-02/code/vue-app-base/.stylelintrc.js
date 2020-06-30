@@ -13,8 +13,10 @@ module.exports = {
     rules: { // rules 查文档 https://stylelint.io/user-guide/rules/list
         "max-nesting-depth": 2, // 允许嵌套的深度为2
         "length-zero-no-unit": true,
-        // "scale-unlimited/declaration-strict-value": "color"
+        // "scale-unlimited/declaration-strict-value": "color",
+        // "block-closing-brace-empty-line-before": 'never',
+
     },
     defaultSeverity: "warning", // "error" 默认错误级别
-	// fix: true // 自动修复
+	fix: true // 自动修复
 }

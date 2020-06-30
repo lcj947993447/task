@@ -77,7 +77,11 @@ module.exports = {
 			template: path.resolve(__dirname, 'public/index.html'), //以当前目录下的index.html文件为模板生成dist/index.html文件
 		}),
 		new VueLoaderPlugin(),// vue-loader 
-		new StyleLintWebpackPlugin(),
+		new StyleLintWebpackPlugin({
+			context: 'src',// 检查目录
+    		// 正则匹配想要lint监测的文件
+    		files: ['**/*.vue', '**/*.less', '**/*.css'],
+		}),
 	],
 	resolve: { // 用来配置.vue文件内引用组件的处理 
 		extensions: [

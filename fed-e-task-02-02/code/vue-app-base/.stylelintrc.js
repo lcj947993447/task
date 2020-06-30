@@ -7,8 +7,13 @@ module.exports = {
     // files: ['**/*.vue', '**/*.less', '**/*.css'],
     extends: ['stylelint-config-standard'],
     processors: ["stylelint-processor-html"],  // vue文件下检查css
+    plugin: [
+        // "stylelint-declaration-strict-value"
+    ],
     rules: { // rules 查文档 https://stylelint.io/user-guide/rules/list
-        "max-nesting-depth": 2 // 允许嵌套的深度为2
+        "max-nesting-depth": 2, // 允许嵌套的深度为2
+        "length-zero-no-unit": true,
+        // "scale-unlimited/declaration-strict-value": "color"
     },
     defaultSeverity: "warning", // "error" 默认错误级别
 	// fix: true // 自动修复

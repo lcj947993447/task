@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "lint": "eslint --ext .js,.vue src/ && stylelint src/**/*.vue src/**/*.less src/**/*.css"
+    "lint": "eslint --ext .js,.vue src/ && stylelint src/**/*.vue src/**/*.css src/**/*.less --syntax less"
   },
   "dependencies": {
     "core-js": "^3.6.5",
@@ -36,6 +36,7 @@
     "style-loader": "^1.0.0",
     "stylelint": "^13.6.1",
     "stylelint-config-standard": "^20.0.0",
+    "stylelint-declaration-strict-value": "^1.5.0",
     "stylelint-processor-html": "^1.0.0",
     "stylelint-webpack-plugin": "^2.1.0",
     "terser-webpack-plugin": "^3.0.6",

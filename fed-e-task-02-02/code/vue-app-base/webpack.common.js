@@ -2,6 +2,7 @@ const path = require('path')
 const webpack = require('webpack')
 const VueLoaderPlugin = require('vue-loader/lib/plugin') // vue-loader 插件，它的职责是将你定义过的其它规则复制并应用到 .vue 文件里相应语言的块
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const StyleLintWebpackPlugin = require('stylelint-webpack-plugin')
 
 module.exports = {
 	entry: './src/index.js',//指定打包文件
@@ -75,7 +76,8 @@ module.exports = {
 			favicon: path.resolve(__dirname, 'public/favicon.ico'),
 			template: path.resolve(__dirname, 'public/index.html'), //以当前目录下的index.html文件为模板生成dist/index.html文件
 		}),
-		new VueLoaderPlugin(),// vue-loader 必备配置
+		new VueLoaderPlugin(),// vue-loader 
+		new StyleLintWebpackPlugin(),
 	],
 	resolve: { // 用来配置.vue文件内引用组件的处理 
 		extensions: [

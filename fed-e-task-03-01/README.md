@@ -1,0 +1,49 @@
+1.
+不是响应式数据
+
+在初次 defineproperty 过程中 data.dog 中没有 name 键值对所以没有给它在 vm 上和 data 中添加 get set 方法
+而 this.dog.name 直接赋值不会触发 set 故不是响应式数据
+
+成为响应式数据的写法
+
+```javascript
+  clickHandler () {
+    // 该 name 属性是响应式的
+    // dog 有 get set 方法，在dog赋值为一个对象时，会递归处理对象，给对象添加get set方法，这样就成为响应式数据了
+    this.dog = {
+      name : 'Trump'
+    }
+  }
+```
+
+原理：
+通过递归 data 使用 defineproperty 给每个对象在 vm 和 data 中添加 get set 方法，
+并对每一个数据添加一个 watch 处理函数并保存在 事件中心 dev 的 sub 中，
+在 set 方法内部调用 dev 的 notify 方法
+去 dev 的 sub 中寻找对应的 watch 函数并执行
+
+当调用数据变动时会触发 set 方法，set 中会调用 notify 方法去 sub 中查找对应的 watch 函数并调用，watch 会对数据做相应的处理
+
+2.diff 算法
+
+diff 算法是通过查找差异来实现的
+只比较同级差异
+
+通过 oldDom 和 newDom 比较
+
+首先创建一个临时 dom = oldDom，并在 oldDom 和 newDom 中的头部和位置创建 start 和 end 指针
+
+newStart 和 oldStart 比较 若相同则同时将 start 指针向后移动，将 newDomItem 保存到对应位置的临时 dom 列表中，若不同往下
+
+newStart 和 oldEnd 比较差异若相同 newStart 指针向后移动，oldEnd 向前移动，将 newDomItem 保存到对应位置的临时 dom 列表中，若不同向下
+
+newStart 去 oldStart 到 oldEnd 中间寻找（跳过标记），
+若找到了将 newStart 指针向后移动，将 oldDom 标记，将 newDomItem 替换到对应位置的临时 dom 列表中，
+若未找 newStart 指针向后移动，并将 newDomItem 插入到对应位置的临时 dom 列表中，
+
+最后会出现两种情况
+
+1.  newDom 的 start 指针和 end 指针先相遇，这时 oldDom 的 start 指针和 end 指针中间的 oldDomItem 是需要删除的内容，删除即可
+2.  oldDom 的 start 指针和 end 指针先相遇，这时 newDom 的 start 指针和 end 指针中间的 newDomItem 是需要新增的内容，将 newDomItem 插入到临时 dom 列表最后即可
+
+最后得到的临时 dom 列表即为最新的 dom 列表

@@ -34,25 +34,19 @@ diff 算法是通过查找差异来实现的
 
 在 oldVnode 和 newVnode 中的头部和位置创建 start 和 end 指针
 
-同类型头 ： oldStart= newStart 将两个 start 指针向后移动，dom 不变并将第一个 domItem 标记
-同类型尾 : oldEnd = newEnd 将两个 end 指针向前移动，dom 不变并将最后一个 domItem 标记
+同类型头 ： oldStart= newStart 将两个 start 指针向后移动，dom 不变
+同类型尾 : oldEnd = newEnd 将两个 end 指针向前移动，dom 不变
 ![Image text](images/head-foo.png)
 
-头尾 : oldStart = newEnd 将 oldStart 指针向后移动，将 newEnd 指针向前移动，将 dom 中的未标记的第一个 domItem 移动到未标记的最后一个之后并添加标记，
+头尾 : oldStart = newEnd 将 oldStart 指针向后移动，将 newEnd 指针向前移动，将 oldDomItem 移动到 dom 中 oldEnd 之后，
 
-尾头 : oldEnd = newStart 将 oldEnd 指针向前移动，将 newStart 指针向后移动，将 dom 中的未标记的最后一个 domItem 移动到未标记的第一个之前，并添加标记，
+尾头 : oldEnd = newStart 将 oldEnd 指针向前移动，将 newStart 指针向后移动，将 oldDomItem 移动到 dom 中 oldStart 之前，
 
-新增节点：newDomItem 在 oldStart-oldEnd 中未找到，即为新增节点，将 newDomItem 插入到 oldStart 之前，将 newStart 指针向后移动
+新增节点：newStart 在 oldStart-oldEnd 中未找到，即为新增节点，将 newDomItem 插入到 oldStart 之前，将 newStart 指针向后移动
 
-newStart = oldEnd 比较差异若相同 newStart 指针向后移动，oldEnd 向前移动，，若不同向下
-
-newStart 去 oldStart 到 oldEnd 中间寻找（跳过标记），
-若找到了将 newStart 指针向后移动，将 oldDom 标记，将 newDomItem 替换到对应位置的临时 dom 列表中，
-若未找 newStart 指针向后移动，并将 newDomItem 插入到对应位置的临时 dom 列表中，
+newStart 去 oldStart - oldEnd 中间找到了（跳过标记）将 newStart 指针向后移动，将 oldDom 标记，将 oldDomItem 移动到 dom 中 oldStart 之前，
 
 最后会出现两种情况
 
-1.  newDom 的 start 指针和 end 指针先相遇，这时 oldDom 的 start 指针和 end 指针中间的 oldDomItem 是需要删除的内容，删除即可
-2.  oldDom 的 start 指针和 end 指针先相遇，这时 newDom 的 start 指针和 end 指针中间的 newDomItem 是需要新增的内容，将 newDomItem 插入到 oldStart 之前
-
-最后得到的临时 dom 列表即为最新的 dom 列表
+1.  oldVnode 的 start 指针和 end 指针先相遇，这时 oldVnode 的 start 指针和 end 指针中间的 oldDomItem 是需要删除的内容，删除即可
+2.  newVnode 的 start 指针和 end 指针先相遇，这时 newVnode 的 start 指针和 end 指针中间的 newDomItem 是需要新增的内容，将 newDomItem 插入到 dom 中 oldStart 之前

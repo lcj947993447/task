@@ -5,10 +5,9 @@
       <router-link to="/about">About</router-link> |
       <router-link to="/video">Video</router-link>
     </div>
-    <router-view/>
+    <router-view />
   </div>
 </template>
-
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

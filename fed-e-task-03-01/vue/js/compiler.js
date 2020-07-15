@@ -1,5 +1,5 @@
 class Compiler {
-  constructor (vm) {
+  constructor(vm) {
     this.el = vm.$el
     this.vm = vm
     this.compile(this.el)
@@ -29,7 +29,20 @@ class Compiler {
     Array.from(node.attributes).forEach(attr => {
       // 判断是否是指令
       let attrName = attr.name
-      if (this.isDirective(attrName)) {
+
+      if (this.isEvent(attrName)) {
+        // @**** --> ***
+        attrName = attrName.substr(1)
+        let key = attr.value
+        this.events(node, key, attrName)
+      } else if (this.isEventOn(attrName)) {
+        // v-on:**** --> ****
+        attrName = attrName.substr(5)
+        let key = attr.value
+        this.events(node, key, attrName)
+      }
+
+      if (this.isDirective(attrName) && !this.isEventOn(attrName)) {
         // v-text --> text
         attrName = attrName.substr(2)
         let key = attr.value
@@ -41,6 +54,12 @@ class Compiler {
   update (node, key, attrName) {
     let updateFn = this[attrName + 'Updater']
     updateFn && updateFn.call(this, node, this.vm[key], key)
+  }
+
+  events (node, key, attrName) {
+    node.addEventListener(`${attrName}`, () => {
+      this.vm.$options.methods[key] && this.vm.$options.methods[key].call(this.vm, node);
+    })
   }
 
   // 处理 v-text 指令
@@ -61,6 +80,22 @@ class Compiler {
       this.vm[key] = node.value
     })
   }
+  // v-html
+  htmlUpdater (node, value, key) {
+    node.innerHTML = value
+    new Watcher(this.vm, key, (newValue) => {
+      node.innerHTML = newValue
+    })
+  }
+
+  // v-on
+  // click
+  clickEvent (node, value, key) {
+    // 判断是否存在函数列表
+    let events = node.events || (node.events = {})
+    events[key] = value
+    console.dir(node)
+  }
 
   // 编译文本节点，处理差值表达式
   compileText (node) {
@@ -70,7 +105,7 @@ class Compiler {
     let value = node.textContent
     if (reg.test(value)) {
       let key = RegExp.$1.trim()
-      
+
       node.textContent = value.replace(reg, this.vm[key])
 
       // 创建watcher对象，当数据改变更新视图
@@ -83,6 +118,15 @@ class Compiler {
   isDirective (attrName) {
     return attrName.startsWith('v-')
   }
+  // 判断元素属性是否是指令
+  isEvent (attrName) {
+    return attrName.startsWith('@')
+  }
+  isEventOn (attrName) {
+    return attrName.startsWith('v-on')
+  }
+
+
   // 判断节点是否是文本节点
   isTextNode (node) {
     return node.nodeType === 3

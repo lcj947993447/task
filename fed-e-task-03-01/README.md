@@ -36,7 +36,6 @@ diff 算法是通过查找差异来实现的
 
 同类型头 ： oldStart= newStart 将两个 start 指针向后移动，dom 不变
 同类型尾 : oldEnd = newEnd 将两个 end 指针向前移动，dom 不变
-![Image text](images/head-foo.png)
 
 头尾 : oldStart = newEnd 将 oldStart 指针向后移动，将 newEnd 指针向前移动，将 oldDomItem 移动到 dom 中 oldEnd 之后，
 

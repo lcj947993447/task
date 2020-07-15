@@ -1,5 +1,5 @@
 let _Vue = null
-export default class VueRouter {
+class VueRouter {
   static install (Vue) {
     // 1 判断当前插件是否被安装
     if (VueRouter.install.installed) {
@@ -40,6 +40,7 @@ export default class VueRouter {
     this.options.routes.forEach(route => {
       this.routeMap[route.path] = route.component
     })
+    console.log(this.routeMap)
   }
 
   initComponent (Vue) {
@@ -69,7 +70,6 @@ export default class VueRouter {
             history.pushState({}, '', this.to)
           }
 
-          console.log('this.to', this.to)
           this.$router.data.current = this.to
           e.preventDefault()
         }
@@ -90,13 +90,15 @@ export default class VueRouter {
   }
 
   initEvent () {
-    window.addEventListener('hashchange', () => {
-      // console.log('hash', window.location.hash.substring(1))
-      this.data.current = window.location.hash.substring(1)
-    })
-
-    window.addEventListener('popstate', () => {
-      this.data.current = window.location.pathname
-    })
+    if (this.options.mode === 'hash') {
+      window.addEventListener('hashchange', () => {
+        this.data.current = window.location.hash.substring(1)
+      })
+    } else if (this.options.mode === 'history') {
+      window.addEventListener('popstate', () => {
+        this.data.current = window.location.pathname
+      })
+    }
   }
 }
+export default VueRouter

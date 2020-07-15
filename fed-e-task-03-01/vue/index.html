@@ -26,8 +26,16 @@
       <h1 v-html="html"></h1>
       <h1>v-model</h1>
       <input type="text" v-model="msg" />
-      <input type="text" v-model="count"/>
+      <input type="text" v-model="count" />
+      <h1>v-on:写法</h1>
+      <h3>click</h3>
       <button type="button" v-on:click="countAdd">click</button>
+      <h3>blur</h3>
+      <input type="text" v-on:blur="countChange" />
+      <h1>@写法</h1>
+      <h3>click</h3>
+      <button type="button" @click="countAdd">click</button>
+      <h3>blur</h3>
       <input type="text" v-on:blur="countChange" />
     </div>
     <script src="./js/dep.js"></script>
@@ -48,10 +56,10 @@
           countAdd() {
             this.count++;
           },
-          countChange(e){
-            console.log('e.value', e.value)
-            this.count = e.value || 0
-          }
+          countChange(e) {
+            console.log("e.value", e.value);
+            this.count = e.value || 0;
+          },
         },
       });
       console.log(vm.msg);

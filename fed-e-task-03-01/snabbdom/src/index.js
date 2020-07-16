@@ -15,7 +15,7 @@ let patch = init([
 ])
 
 
-let dataList = [
+let data = [
   {
     rank: 1,
     name: "eee",
@@ -70,8 +70,8 @@ let dataList = [
 
 let rank = {
   rankCurrent: "rank",
-  rankTypeList: ["rank", "name", "age"],
-  dataListLen: dataList.length,
+  rankTypeList: ['none', "rank", "name", "age"],
+  dataLen: data.length,
   addNameList: ["aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg", "hhh", "iii", "jjj", "kkk", "lll", "mmm", "nnn"],
 }
 
@@ -99,29 +99,29 @@ function wrapper (data) {
     ]),
     h(
       'div.list-wrapper',
-      data.map(itemView)
+      noData()
     )
   ])
 }
 function itemAdd () {
   let a = {
-    rank: rank.dataListLen += 1,
+    rank: rank.dataLen += 1,
     name: rank.addNameList[Math.floor(Math.random() * 14)],
     age: Math.floor(Math.random() * 100)
   }
-  dataList = [a].concat(dataList)
+  data = [a].concat(data)
 
   sortData()
 }
 
 // sortView 排序
 function sortView (item) {
-  
+
   return h(
     'a.btn',
     {
       class: {
-        active: rank.rankCurrent === item 
+        active: rank.rankCurrent === item
       },
       props: {
         href: "javascript:;"
@@ -137,19 +137,28 @@ function sortView (item) {
 // 数据排序
 function sortData (sort) {
   rank.rankCurrent = sort || rank.rankCurrent
-  dataList.sort((prev, next) => {
-    if (prev[rank.rankCurrent] > next[rank.rankCurrent]) {
-      return 1;
-    }
-    if (prev[rank.rankCurrent] < next[rank.rankCurrent]) {
-      return -1;
-    }
-    return 0;
-  });
+  if (rank.rankCurrent !== "none") {
+    data.sort((prev, next) => {
+      if (prev[rank.rankCurrent] > next[rank.rankCurrent]) {
+        return 1;
+      }
+      if (prev[rank.rankCurrent] < next[rank.rankCurrent]) {
+        return -1;
+      }
+      return 0;
+    });
+  }
   initDom();
 }
 
 // itemView 内容
+function noData () {
+  if(data.length > 0){
+    return data.map(itemView)
+  }else{
+    return h('div.no-data', '没数据了~')
+  }
+}
 function itemView (item) {
   return h(
     'div.item-wrapper',
@@ -174,19 +183,27 @@ function itemView (item) {
       )
     ]
   )
+
 }
 
 function itemRemove (item) {
-
+  console.log(item)
+  if (data.length <= 1) {
+    alert("要删完啦")
+  }
+  data = data.filter(i => {
+    return i !== item
+  })
+  initDom();
 }
 
 
 
 function initDom () {
-  vnode = patch(vnode, wrapper(dataList));
+  vnode = patch(vnode, wrapper(data));
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   var app = document.getElementById('app');
-  vnode = patch(app, wrapper(dataList));
+  vnode = patch(app, wrapper(data));
 });

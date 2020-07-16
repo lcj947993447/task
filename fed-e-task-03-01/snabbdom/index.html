@@ -1,13 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>snabbdom</title>
-</head>
-<body>
-  
-
-  <script src="./src/index.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>snabbdom</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+        text-decoration: none;
+      }
+      html,
+      body {
+        width: 100%;
+        min-height: 100%;
+        overflow: auto;
+        background: #f8f8f8;
+      }
+      #app {
+        width: 400px;
+        padding-top: 50px;
+        margin: 0 auto;
+      }
+      .title {
+        margin-bottom: 20px;
+        font-size: 40px;
+      }
+      .sort-wrapper {
+        margin-bottom: 10px;
+      }
+      .sort-wrapper .sort-type {
+        display: inline-block;
+        margin-left: 10px;
+      }
+      .btn {
+        display: inline-block;
+        margin-left: 5px;
+        padding: 5px;
+        background: #fff;
+        box-shadow: 0 0 1px rgba(0, 0, 0);
+        cursor: pointer;
+        color: #333;
+      }
+      .btn.active {
+        color: #ff0000;
+      }
+      .btn.add {
+        float: right;
+      }
+      .list-wrapper .item-wrapper {
+        position: relative;
+        width: 400px;
+        height: 120px;
+        background: #fff;
+        margin-bottom: 10px;
+      }
+      .list-wrapper .item-wrapper div {
+        float: left;
+        height: 120px;
+        text-align: center;
+        line-height: 120px;
+      }
+      .list-wrapper .item-wrapper div.rank,
+      .list-wrapper .item-wrapper div.age {
+        width: 100px;
+      }
+      .list-wrapper .item-wrapper div.name {
+        width: 200px;
+      }
+      .list-wrapper .item-wrapper .item-remove {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        display: inline-block;
+        padding: 2px;
+        color: #f00;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./src/index.js"></script>
+  </body>
 </html>

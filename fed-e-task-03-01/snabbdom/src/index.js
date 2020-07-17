@@ -103,6 +103,7 @@ function wrapper (data) {
     )
   ])
 }
+// 新增
 function itemAdd () {
   let a = {
     rank: rank.dataLen += 1,
@@ -152,6 +153,7 @@ function sortData (sort) {
 }
 
 // itemView 内容
+// 无数据
 function noData () {
   if(data.length > 0){
     return data.map(itemView)
@@ -159,6 +161,7 @@ function noData () {
     return h('div.no-data', '没数据了~')
   }
 }
+// 有数据
 function itemView (item) {
   return h(
     'div.item-wrapper',
@@ -185,7 +188,7 @@ function itemView (item) {
   )
 
 }
-
+// 删除
 function itemRemove (item) {
   console.log(item)
   if (data.length <= 1) {
@@ -197,8 +200,7 @@ function itemRemove (item) {
   initDom();
 }
 
-
-
+// 初始化
 function initDom () {
   vnode = patch(vnode, wrapper(data));
 }

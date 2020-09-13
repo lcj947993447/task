@@ -2,24 +2,21 @@
  * 用户认证相关接口模块
  */
 
-import request from '@/utils/request'
+import { request } from '@/plugins/request'
 
-export const register = async (data) => {
-  const res = await request({
+//  注册
+export const register = data => {
+  return request({
     method: 'POST',
     url: '/api/users',
-    data,
+    data
   })
-
-  return res.data
 }
-
-export const login = async (data) => {
-  const res = await request({
+// 登录
+export const login = data => {
+  return request({
     method: 'POST',
-    url: '/users/login',
-    data,
+    url: '/api/users/login',
+    data
   })
-
-  return res.data
 }

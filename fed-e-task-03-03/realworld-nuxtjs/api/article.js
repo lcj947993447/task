@@ -61,3 +61,45 @@ export const addComment = (slug, data) => {
     data
   })
 }
+
+// 删除文章评论
+export const deleteComment = (slug, id) => {
+  return request({
+    method: 'DELETE',
+    url: `/api/articles/${slug}/comments/${id}`
+  })
+}
+
+// 发布新文章
+export const createArticle = data => {
+  return request({
+    method: 'POST',
+    url: `/api/articles`,
+    data
+  })
+}
+
+// 我的文章列表
+export const myArticle = username => {
+  return request({
+    method: 'GET',
+    url: `/api/profiles/${username}`
+  })
+}
+
+// 修改文章
+export const editorArticle = (slug, data) => {
+  return request({
+    method: 'PUT',
+    url: `/api/articles/${slug}`,
+    data
+  })
+}
+
+// 删除文章
+export const deleteArticle = slug => {
+  return request({
+    method: 'DELETE',
+    url: `/api/articles/${slug}`
+  })
+}

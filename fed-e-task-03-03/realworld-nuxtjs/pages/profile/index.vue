@@ -92,12 +92,17 @@
 </template>
 
 <script>
+import { getProfile, followUser, unFollowUser } from '@/api/profile'
 export default {
   middleware: 'authenticated',
   name: 'ProfileIndex',
+  async asyncData ({ params }) {
+    const { data } = await getProfile(params.username)
+    console.log(data)
+    return { data }
+  },
   computed: {},
-  created () { },
+  mounted () {
+  }
 }
 </script>
-<style lang="scss" scoped>
-</style>

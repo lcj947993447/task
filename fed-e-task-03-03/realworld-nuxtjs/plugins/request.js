@@ -32,16 +32,3 @@ export default ({ store }) => {
   // 响应拦截器
 
 }
-
-const apiList = [
-  'PUT /api/user',
-  'GET /api/profiles/:username',
-  'POST /api/profiles/:username/follow',
-  'DELETE /api/profiles/:username/follow',
-  'POST /api/articles',
-  'PUT /api/articles/:slug',
-  'DELETE /api/articles/:slug',
-  'DELETE /api/articles/:slug/comments/:id',
-  'POST /api/articles/:slug/favorite',
-  'DELETE /api/articles/:slug/favorite'
-]

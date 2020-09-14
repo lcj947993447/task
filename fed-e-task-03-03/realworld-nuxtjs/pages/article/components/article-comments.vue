@@ -45,6 +45,11 @@
           {{ comment.author.username }}
         </nuxt-link>
         <span class="date-posted">{{ comment.ceratedAt | date('MMM DD, YYYY') }}</span>
+        <span class="mod-options"
+              v-if="comment.author.username === user.username">
+          <i class="ion-trash-a"
+             @click.stop="delComment(comment)"></i>
+        </span>
       </div>
     </div>
 
@@ -52,7 +57,7 @@
 </template>
 
 <script>
-import { getComments, addComment } from '@/api/article'
+import { getComments, addComment, deleteComment } from '@/api/article'
 import { mapState } from 'vuex'
 
 export default {
@@ -75,8 +80,7 @@ export default {
     ...mapState(['user'])
   },
   async mounted () {
-    const { data } = await getComments(this.article.slug)
-    this.comments = data.comments
+    this.getComments()
   },
   methods: {
     async onSubmit () {
@@ -86,7 +90,28 @@ export default {
           {
             comment: this.comment
           })
-        console.log(data)
+        this.getComments()
+      } catch (error)
+      {
+        console.log(error)
+      }
+    },
+    async delComment (comment) {
+      try
+      {
+        await deleteComment(this.article.slug, comment.id)
+        this.getComments()
+      } catch (error)
+      {
+        console.log(error)
+      }
+
+    },
+    async getComments () {
+      try
+      {
+        const { data } = await getComments(this.article.slug)
+        this.comments = data.comments
       } catch (error)
       {
         console.log(error)

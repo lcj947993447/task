@@ -46,7 +46,8 @@
       </button>
       &nbsp;&nbsp;
       <button class="btn btn-sm btn-outline-primary"
-              :class="{active: article.favorited}">
+              :class="{active: article.favorited}"
+              @click="onFavorite">
         <i class="ion-heart"></i>
         &nbsp;
         Favorite Post <span class="counter">({{article.favoritesCount}})</span>
@@ -57,7 +58,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { deleteArticle } from '@/api/article'
+import { deleteArticle, addFavorite, deleteFavorite } from '@/api/article'
 export default {
   name: 'ArticleMeta',
   props: {
@@ -87,6 +88,23 @@ export default {
         this.article.author.following = true
       }
       this.article.author.onFollowDisabled = false
+    },
+    async onFavorite (article) {
+      article.favoriteDisabled = true
+      if (article.favorited)
+      {
+        // 取消点赞
+        await deleteFavorite(article.slug)
+        article.favorited = false
+        article.favoritesCount += -1
+      } else
+      {
+        // 添加点赞
+        await addFavorite(article.slug)
+        article.favorited = true
+        article.favoritesCount += 1
+      }
+      article.favoriteDisabled = false
     }
   }
 }

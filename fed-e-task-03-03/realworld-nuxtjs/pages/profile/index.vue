@@ -197,6 +197,23 @@ export default {
         this.profile.following = true
       }
       this.profile.onFollowDisabled = false
+    },
+    async onFavorite (article) {
+      article.favoriteDisabled = true
+      if (article.favorited)
+      {
+        // 取消点赞
+        await deleteFavorite(article.slug)
+        article.favorited = false
+        article.favoritesCount += -1
+      } else
+      {
+        // 添加点赞
+        await addFavorite(article.slug)
+        article.favorited = true
+        article.favoritesCount += 1
+      }
+      article.favoriteDisabled = false
     }
   }
 }

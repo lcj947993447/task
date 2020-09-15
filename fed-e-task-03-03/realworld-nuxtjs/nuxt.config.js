@@ -57,6 +57,11 @@ module.exports = {
       )
     }
   },
+  // 服务端端口号
+  server: {
+    host: '0.0.0.0',
+    port: 3000
+  },
   // 注册插件
   plugins: [
     '~/plugins/request.js',

@@ -37,10 +37,12 @@
     </template>
     <template v-else>
       <button class="btn btn-sm btn-outline-secondary"
-              :class="{active: article.author.following}">
+              :class="{active: article.author.following}"
+              :disabled="article.author.onFollowDisabled"
+              @click="onFollow">
         <i class="ion-plus-round"></i>
         &nbsp;
-        Follow {{article.author.username}} <span class="counter">(10)</span>
+        {{ article.author.following ? "unFollow" : "Follow"}} {{article.author.username}} <span class="counter">(10)</span>
       </button>
       &nbsp;&nbsp;
       <button class="btn btn-sm btn-outline-primary"
@@ -72,6 +74,19 @@ export default {
       const { data } = await deleteArticle(this.article.slug)
       console.log(data)
       this.$router.push('/')
+    },
+    async onFollow () {
+      this.article.author.onFollowDisabled = true
+      if (this.article.author.following)
+      {
+        await unFollowUser(this.article.author.username)
+        this.article.author.following = false
+      } else
+      {
+        await followUser(this.article.author.username)
+        this.article.author.following = true
+      }
+      this.article.author.onFollowDisabled = false
     }
   }
 }

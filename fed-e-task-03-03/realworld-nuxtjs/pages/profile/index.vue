@@ -36,8 +36,10 @@
             <ul class="nav nav-pills outline-active">
               <li class="nav-item">
                 <nuxt-link class="nav-link"
+                           :class="{
+                             active: tab === 'my_articles'
+                            }"
                            exact
-                           :class="{active: tab === 'my_articles'}"
                            :to="{
                              name: 'profile',
                              params:{
@@ -47,8 +49,10 @@
               </li>
               <li class="nav-item">
                 <nuxt-link class="nav-link"
+                           :class="{
+                             active: tab === 'favorited_articles'
+                             }"
                            exact
-                           :class="{active: tab === 'favorited_articles'}"
                            :to="{
                              name: 'profile',
                              params:{
@@ -117,7 +121,10 @@
                   :key="item">
                 <nuxt-link class="page-link"
                            :to="{
-                            name: 'home',
+                            name: 'profile',
+                            params: {
+                              username: profile.username
+                            },
                             query: {
                               page: item,
                               tab: tab
@@ -141,7 +148,7 @@ import { getArticles, addFavorite, deleteFavorite } from '@/api/article'
 export default {
   middleware: 'authenticated',
   name: 'ProfileIndex',
-  async asyncData ({ params, query }) {
+  async asyncData ({ query, params }) {
     const page = Number.parseInt(query.page || 1)
     const limit = 10
     const tab = query.tab || 'my_articles'
@@ -168,9 +175,10 @@ export default {
       articles, // 文章列表
       articlesCount, // 文章页码
       page, // 页码
-      limit, // 每页数据条数
+      limit // 每页数据条数
     }
   },
+  watchQuery: ['page', 'tab'],
   computed: {
     totalPage () {
       return Math.ceil(this.articlesCount / this.limit)
